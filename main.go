@@ -35,3 +35,7 @@ func blueHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/png")
 	png.Encode(w, img)
 }
+
+
+// Pastikan kode Anda memiliki handler untuk /red
+http.HandleFunc("/red", redHandler)
