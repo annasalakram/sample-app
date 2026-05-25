@@ -1,37 +1,12 @@
-options:
-  logging: CLOUD_LOGGING_ONLY
-
 steps:
-  # Step 1: Compile the Go Application
-  - name: 'gcr.io/cloud-builders/go'
-    id: 'Compile application'
-    env: ['GOPATH=/gopath']
-    args: ['build', '-o', 'main', 'main.go']
-
-  # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'Build Docker image'
-<<<<<<< HEAD
-    args: ['build', '-t', 'us-east4-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:v2.0', '.']
-=======
-    args: ['build', '-t', 'us-east4-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:v1.0', '.']
->>>>>>> dev
+    args: ['build', '-t', 'us-east4-docker.pkg.dev/qwiklabs-gcp-01-956ae2f30263/my-repository/hello-cloudbuild:v2.0', '.']
 
-  # Step 3: Push the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'Push Docker image'
-<<<<<<< HEAD
-    args: ['push', 'us-east4-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:v2.0']
-=======
-    args: ['push', 'us-east4-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:v1.0']
->>>>>>> dev
+    args: ['push', 'us-east4-docker.pkg.dev/qwiklabs-gcp-01-956ae2f30263/my-repository/hello-cloudbuild:v2.0']
 
-  # Step 4: Dapatkan kredensial cluster
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'Get GKE Credentials'
-    args: ['container', 'clusters', 'get-credentials', 'hello-cluster', '--zone', 'us-east4-c']
-
-  # Step 5: Deploy
   - name: 'gcr.io/cloud-builders/kubectl'
-    id: 'Deploy'
-    args: ['-n', 'prod', 'apply', '-f', 'prod/deployment.yaml']
+    args: ['get-credentials', 'hello-cluster', '--zone', 'us-east4-c']
+
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['apply', '-f', 'prod/deployment.yaml', '-n', 'prod']
